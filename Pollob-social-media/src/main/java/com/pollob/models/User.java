@@ -37,7 +37,6 @@ public class User {
 	 * Custom column name.
 	 * ager column a jodi data thake and pore custom/default vabe abar column name dey, tahole ager column er sathe new column replace hobe na. database a sob column er sese new ekta column create hobe. and ager column a "null" value store hobe.
 	 */
-	@Column(name="my_name")
 	private String firstName;
 	private String lastName;
 	private String email;
