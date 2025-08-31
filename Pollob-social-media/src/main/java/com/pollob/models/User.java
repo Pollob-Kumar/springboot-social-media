@@ -6,7 +6,10 @@ package com.pollob.models;
  */
 
 public class User {
+
+	//id diye user find korar jonno id filed nilam. 2nd
 	
+	private Integer id;
 	//Property set koram (Private) 
 	private String firstName;
 	private String lastName;
@@ -20,12 +23,23 @@ public class User {
 
 
 	//Propertir jonno automatic Constructor field use kora and setter getter method use kora.
-	public User(String firstName, String lastName, String email, String password) {
+	public User(Integer id, String firstName, String lastName, String email, String password) {
 		super();
+		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 		this.password = password;
+	}
+
+
+	public Integer getId() {
+		return id;
+	}
+
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 
