@@ -3,6 +3,7 @@ package com.pollob.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pollob.models.User;
+import com.pollob.repository.UserRepository;
 
 /*
  * User class er jonno ei UserController.
@@ -20,6 +22,43 @@ import com.pollob.models.User;
  */
 @RestController
 public class UserController {
+	
+	/*
+	 * "UserRepository" k import korlam "UserController" class a (import korlam karon "JpaRepository" er sokol kichu ache "UserRepository" er majhe) and tar object create korlam "userRepository".
+	 *  @Autowired= auto connection
+	 */
+	@Autowired
+	UserRepository userRepository;
+	
+	/*database jonno 4-V te opore niye aslam, jekono jaigate rakha jai ata
+	 * @PostMapping= jokhon database a data add kora lagbe tokhon "@PostMapping" use hoy.
+	 * @RequestBody= jokhon kono frontend libray(ex. POSTMAN) theke data sent kori, tokhon data body-te sent korbo, ja database-a add hobe.
+	 * akhane(@RequestBody User user) "User" holo datatype and "user" holo obj/variable.
+	 * 
+	 */
+	@PostMapping("/users")
+	public User createUser(@RequestBody User user) {
+		
+		User newUser=new User();
+		
+		/*
+		 * user.getEmail()= "user" obj theke(ja "@RequestBody" method er parameter-a  "User" class er obj kore nichilam.) email ber kore ane( getter method diye, ja User.java class a define kora ache.) 
+		 * newUser.setEmail(...)= ber kora email "newUser" obj-er Email a bosiye dey(setter method diye, ja User.java class a define kora ache)
+		 */
+		newUser.setEmail(user.getEmail());
+		newUser.setFirstName(user.getFirstName());
+		newUser.setLastName(user.getLastName());
+		newUser.setPassword(user.getPassword());
+		newUser.setId(user.getId());
+
+		//database a data save korar jonno "save" method ja ache "userRepository" er majhe.
+		User savedUser=userRepository.save(newUser);
+
+		//karon "savedUser" obj a save data ache.
+		return savedUser;
+		
+	}
+	
 
 	/*
 	 * database theke data read korar jonno @GetMapping and "/home" holo endpoint.
@@ -58,31 +97,6 @@ public class UserController {
 		user1.setId(Id);
 		
 		return  user1;
-	}
-	
-	/*
-	 * @PostMapping= jokhon database a data add kora lagbe tokhon "@PostMapping" use hoy.
-	 * @RequestBody= jokhon kono frontend libray(ex. POSTMAN) theke data sent kori, tokhon data body-te sent korbo, ja database-a add hobe.
-	 * akhane(@RequestBody User user) "User" holo datatype and "user" holo obj/variable.
-	 * 
-	 */
-	@PostMapping("/users")
-	public User createUser(@RequestBody User user) {
-		
-		User newUser=new User();
-		
-		/*
-		 * user.getEmail()= "user" obj theke(ja "@RequestBody" method er parameter-a  "User" class er obj kore nichilam.) email ber kore ane( getter method diye, ja User.java class a define kora ache.) 
-		 * newUser.setEmail(...)= ber kora email "newUser" obj-er Email a bosiye dey(setter method diye, ja User.java class a define kora ache)
-		 */
-		newUser.setEmail(user.getEmail());
-		newUser.setFirstName(user.getFirstName());
-		newUser.setLastName(user.getLastName());
-		newUser.setPassword(user.getPassword());
-		newUser.setId(user.getId());
-
-		return newUser;
-		
 	}
 	
 	/*
