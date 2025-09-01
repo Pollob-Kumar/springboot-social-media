@@ -11,10 +11,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pollob.models.User;
 import com.pollob.repository.UserRepository;
+import com.pollob.service.UserService;
 
 /*
  * User class er jonno ei UserController.
@@ -31,6 +33,9 @@ public class UserController {
 	@Autowired
 	UserRepository userRepository;
 	
+	@Autowired
+	UserService userService;
+	
 	/*database jonno 4-V te opore niye aslam, jekono jaigate rakha jai ata
 	 * @PostMapping= jokhon database a data add kora lagbe tokhon "@PostMapping" use hoy.
 	 * @RequestBody= jokhon kono frontend libray(ex. POSTMAN) theke data sent kori, tokhon data body-te sent korbo, ja database-a add hobe.
@@ -40,20 +45,9 @@ public class UserController {
 	@PostMapping("/users")
 	public User createUser(@RequestBody User user) {
 		
-		User newUser=new User();
-		
-		/*
-		 * user.getEmail()= "user" obj theke(ja "@RequestBody" method er parameter-a  "User" class er obj kore nichilam.) email ber kore ane( getter method diye, ja User.java class a define kora ache.) 
-		 * newUser.setEmail(...)= ber kora email "newUser" obj-er Email a bosiye dey(setter method diye, ja User.java class a define kora ache)
-		 */
-		newUser.setEmail(user.getEmail());
-		newUser.setFirstName(user.getFirstName());
-		newUser.setLastName(user.getLastName());
-		newUser.setPassword(user.getPassword());
-		newUser.setId(user.getId());
 
 		//database a data save korar jonno "save" method ja ache "userRepository" er majhe.
-		User savedUser=userRepository.save(newUser);
+		User savedUser=userService.registerUser(user);
 
 		//karon "savedUser" obj a save data ache.
 		return savedUser;
@@ -88,14 +82,9 @@ public class UserController {
 	@GetMapping("/users/{userId}")
 	public User getUserById(@PathVariable("userId") Integer Id) throws Exception {
 		
-		Optional<User> user= userRepository.findById(Id);
+		User user=userService.findUserById(Id);
 		
-		//jodi user thake
-		if(user.isPresent()) {
-			return user.get();
-		}
-		//jodi id na paoya jai. tokhon ei exception asbe
-		throw new Exception("user not exist with userId "+Id);
+		return user;
 	}
 	
 	
@@ -104,61 +93,28 @@ public class UserController {
 	 * @RequestBody body te sei data dibo jei data change/update korte cai.
 	 */
 	
-	/*
-	 * 
-	 */
-	@PutMapping("/users/{Id}")
-	public User updateUser(@RequestBody User user, @PathVariable Integer Id) throws Exception {
+	@PutMapping("/users/{userId}")
+	public User updateUser(@RequestBody User user, @PathVariable Integer userId) throws Exception {
 		
-		Optional<User> user1=userRepository.findById(Id);
+		User updatedUser=userService.updateUser(user, userId);
 		
-		//jodi empty hoy tahole kaj korbe
-		if(user1.isEmpty()) {
-			throw new Exception("user not exit with id "+Id);
-		}
-		
-		
-		 User oldUser=user1.get();
-		 
-		//jodi user na thake oi id diye 
-		 if(user.getFirstName()!=null) {
-			 oldUser.setFirstName(user.getFirstName());
-		 }
-		 if(user.getLastName()!=null) {
-			 oldUser.setLastName(user.getLastName());
-		 }
-		 //ei vabei sob hobe.
-		
-		 //note: "save"= use hobe data add and update korte
-		 User updatedUser=userRepository.save(oldUser);
-		
-		 return updatedUser;
+		return updatedUser;
 	}
 	
-	/*
-	 * @DeleteMapping= jekono data delete korar jonno use kora hoy.
-	 * "deleteUser" method er return type "String/void" dilei hobe. kintu Delete hoyeche ki'na ta janar jonno String use kore ekta messages return korbo.
-	 * @PathVariable= use kori endpoint theke ja amra pass kori("{userId}" ei user data delete korte cai) ta access korar jonno.
-	 */
+	@PutMapping("/users/follow/{userId1}/{userId2}")
+	public User followUserHandler(@PathVariable Integer userId1, @PathVariable Integer userId2) throws Exception {
 	
-	/*
-	 * 
-	 */
-	@DeleteMapping("/users/{userId}")
-	public String deleteUser(@PathVariable("userId") Integer userId) throws Exception {
+	User user=userService.followUser(userId1, userId2);
+	return user;
+	}
+	
+	@GetMapping("/users/search")
+	public List<User> searchUser(@RequestParam("query") String query){
 		
-		//check kore user ache ki na
-        Optional<User> user1=userRepository.findById(userId);
+		List<User> users=userService.searchUser(query);
 		
-        //jodi user empty hoy
-		if(user1.isEmpty()) {
-			throw new Exception("user not exit with id "+userId);
-		}
-		
-		userRepository.delete(user1.get());
-		
-		return "user deleted successfully with id "+userId;
-		
+		return users;
 	}
 	 
+	
 }

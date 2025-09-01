@@ -1,5 +1,8 @@
 package com.pollob.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -41,6 +44,11 @@ public class User {
 	private String lastName;
 	private String email;
 	private String password;
+	
+	//nije method create korar jonno. (ex. findUserByEmail)
+	private String gender;
+	private List<Integer> followers=new ArrayList<>();
+	private List<Integer> followings=new ArrayList<>();
 
 	//default constructor
 	public User() {
@@ -49,13 +57,17 @@ public class User {
 
 
 	//Propertir jonno automatic Constructor field use kora and setter getter method use kora.
-	public User(Integer id, String firstName, String lastName, String email, String password) {
+	public User(Integer id, String firstName, String lastName, String email, String password, String gender,
+			List<Integer> followers, List<Integer> followings) {
 		super();
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 		this.password = password;
+		this.gender = gender;
+		this.followers = followers;
+		this.followings = followings;
 	}
 
 
@@ -107,6 +119,38 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
+
+	public String getGender() {
+		return gender;
+	}
+
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+
+	public List<Integer> getFollowers() {
+		return followers;
+	}
+
+
+	public void setFollowers(List<Integer> followers) {
+		this.followers = followers;
+	}
+
+
+	public List<Integer> getFollowings() {
+		return followings;
+	}
+
+
+	public void setFollowings(List<Integer> followings) {
+		this.followings = followings;
+	}
+
+	
 
 	
 	
