@@ -16,9 +16,14 @@ import com.pollob.models.User;
  */
 public interface UserRepository extends JpaRepository<User, Integer> {
 	
+	//custom API for "findByEmail()" method
 	public User findByEmail(String email);
 	
-	@Query("select u from User u where u.firstName LIKE %:qeury% OR u.lastName LIKE %:query% OR u.email LIKE %:qeury%")
+	/*
+	 * "List<User>" onek user er jonno
+	 * @Param("query") & %:query%   ei 2tar queryName jeno akoi hoy.
+	 */
+	@Query("select u from User u where u.firstName LIKE %:query% OR u.lastName LIKE %:query% OR u.email LIKE %:query%")
 	public List<User> searchUser(@Param("query") String query);
 
 }

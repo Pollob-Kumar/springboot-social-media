@@ -47,6 +47,11 @@ public class User {
 	
 	//nije method create korar jonno. (ex. findUserByEmail)
 	private String gender;
+	
+	/*
+	 * "private List<Integer> followers;" ei vabe rakha mane null kore rakha followers/followings. Kintu list kokhonoi null hote pare na, "EmptyList" hote hobe. tai list er jonno followers/following er obj create korlam.
+	 * "private List<Integer> followers=new ArrayList<>();" ata mane akhon "EmptyList" hoye ache.
+	 */
 	private List<Integer> followers=new ArrayList<>();
 	private List<Integer> followings=new ArrayList<>();
 
