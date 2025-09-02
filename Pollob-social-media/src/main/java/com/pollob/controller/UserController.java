@@ -33,8 +33,17 @@ public class UserController {
 	@Autowired
 	UserRepository userRepository;
 	
+	/*
+	 * "UserService" k import korlam "UserController" class a (import korlam karon "UserService" er sokol method ache) and tar object create korlam "userService".
+	 *  @Autowired= auto connection
+	 */
 	@Autowired
 	UserService userService;
+	
+	
+	/*
+	 * ei method er vitore "UserService" interface er "registerUser()" method use korbo, ja "UserServiceImplementation" class a implement korchi. 
+	 */
 	
 	/*database jonno 4-V te opore niye aslam, jekono jaigate rakha jai ata
 	 * @PostMapping= jokhon database a data add kora lagbe tokhon "@PostMapping" use hoy.
@@ -46,7 +55,7 @@ public class UserController {
 	public User createUser(@RequestBody User user) {
 		
 
-		//database a data save korar jonno "save" method ja ache "userRepository" er majhe.
+		//"UserService" interface er "registerUser()" method use korlam
 		User savedUser=userService.registerUser(user);
 
 		//karon "savedUser" obj a save data ache.
@@ -73,6 +82,8 @@ public class UserController {
 	}
 	
 	
+	//ei method er vitore "UserService" interface er "findUserById()" method use korbo, ja "UserServiceImplementation" class a implement korchi. 
+
 	//user id("{userId}") diye, user find kora.
 	/*
 	 * "findById(Id)" user id diye user find kora.
@@ -82,35 +93,47 @@ public class UserController {
 	@GetMapping("/users/{userId}")
 	public User getUserById(@PathVariable("userId") Integer Id) throws Exception {
 		
+		//"UserService" interface er "findUserById()" method use korlam
 		User user=userService.findUserById(Id);
 		
 		return user;
 	}
 	
 	
+	//ei method er vitore "UserService" interface er "updateUser()" method use korbo, ja "UserServiceImplementation" class a implement korchi.
+	
 	/*
 	 * "@PutMapping" use hoy data update korar jonno.
 	 * @RequestBody body te sei data dibo jei data change/update korte cai.
 	 */
-	
 	@PutMapping("/users/{userId}")
 	public User updateUser(@RequestBody User user, @PathVariable Integer userId) throws Exception {
 		
+		//"UserService" interface er "updateUser()" method use korlam
 		User updatedUser=userService.updateUser(user, userId);
 		
 		return updatedUser;
 	}
 	
+	
+	/*
+	 * UserServiceImplementation class a "followUser()" implement korchi ja akhon "followUserHandler()" dara handle korchi.
+	 * 2ta @PathVariable nichi karon ekhon follower and onno jon following
+	 */
 	@PutMapping("/users/follow/{userId1}/{userId2}")
 	public User followUserHandler(@PathVariable Integer userId1, @PathVariable Integer userId2) throws Exception {
 	
+		//"UserService" interface er "followUser()" method use korlam
 	User user=userService.followUser(userId1, userId2);
 	return user;
 	}
 	
+	
+	//"UserServiceImplementation" class theke @RequestParam use kore "query" ta nicche.
 	@GetMapping("/users/search")
 	public List<User> searchUser(@RequestParam("query") String query){
 		
+		//return type User kintu list akare jeno hoy sei jonno List<User>
 		List<User> users=userService.searchUser(query);
 		
 		return users;
