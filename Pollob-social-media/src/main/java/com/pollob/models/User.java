@@ -36,6 +36,7 @@ public class User {
 	 * @Id= Spring boot k bolchi, je propertir opor "@Id" ache take Unique value/Identifire hisabe rakho.
 	 */
 	@Id
+	// id automatic vabe generate hobe
 	@GeneratedValue(strategy = GenerationType.AUTO )
 	private Integer id;
 	
