@@ -25,10 +25,10 @@ public class ApiResponse {
 
 	// 🔹 Getter & Setter methods
 
-	public String getMessage() {
+	public String getMessage() {  //getter methods
 		return message;
 	}
-	public void setMessage(String message) {
+	public void setMessage(String message) { //setter methods
 		this.message = message;
 	}
 	public boolean isStatus() {
