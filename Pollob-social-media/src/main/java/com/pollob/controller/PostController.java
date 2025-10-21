@@ -31,7 +31,7 @@ public class PostController {
 	@PostMapping("/posts/user/{userId}")
 	public ResponseEntity<Post> createPost(@RequestBody Post post, @PathVariable Integer userId) throws Exception{
 		
-		// service layer e createNewPost() call kora hocche
+		// service layer e createNewPost() call kora hocche.
 		Post createdPost=postService.createNewPost(post, userId);
 		
 		// created post return kora hocche status ACCEPTED (202) diye
@@ -39,7 +39,7 @@ public class PostController {
 	}
 	
 	/*
-	 *  API: DELETE -> delete a post
+	 *  API: DELETE -> delete a post.
 	 *  ei method ta post delete korar jonno
 	 */
 	@DeleteMapping("/posts/{postId}/user/{userId}")
