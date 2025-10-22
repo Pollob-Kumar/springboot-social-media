@@ -96,7 +96,7 @@ public class PostController {
 	 * API: PUT -> save or unsave a post
 	 * ei method ta post save/un-save korar jonno
 	 */
-	@PutMapping("/posts/{postId}/user/{userId}")
+	@PutMapping("/posts/save/{postId}/user/{userId}")
 	public ResponseEntity<Post> savePostdHandler(@PathVariable Integer postId, @PathVariable Integer userId) throws Exception{
 		
 		// service theke post save/unsave kora hocche

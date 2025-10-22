@@ -7,6 +7,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;  // auto id generate korar jonno
 import jakarta.persistence.GenerationType;  // generation technique set korar jonno
 import jakarta.persistence.Id;  // primary key define korar jonno
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
  //@Entity boleche je ei class ta ekta database table hobe
 @Entity
@@ -20,7 +22,11 @@ public class Post {
 	private String caption;
 	private String image;
 	private String video;
+	
+	@ManyToOne
 	private User user; // (User class theke asbe) je user post ta create koreche, tar info store korbe 
+	
+	@OneToMany
 	private List<User> liked=new ArrayList<>(); // ei list e thakbe jara ei post ta like koreche
 	private LocalDateTime createAt; // post ta kobe create hoyeche, tar date & time
 	
