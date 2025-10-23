@@ -1,5 +1,6 @@
 package com.pollob.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional; // Optional class use korar jonno import
 
@@ -63,11 +64,11 @@ public class PostServiceImplementation implements PostService {
 		Post newPost=new Post();
 		newPost.setCaption(post.getCaption());// caption set kora hocche
 		newPost.setImage(post.getImage()); // image set kora hocche
-		//newPost.setCreateAt(new LocalDateTime); // eta comment kora ache, time set kora hoy nai
+		newPost.setCreateAt(LocalDateTime.now()); // eta comment kora ache, time set kora hoy nai
 		newPost.setVideo(post.getVideo()); // video set kora hocche
 		newPost.setUser(user); // je user post ta create korche tar info set kora hocche
 		
-		return newPost;// newly created post object return kora hocche
+		return postRepository.save(newPost);
 	}
 
 	 //ei method ta post delete korar jonno
