@@ -74,7 +74,7 @@ public class PostServiceImplementation implements PostService {
 	 //ei method ta post delete korar jonno
 	@Override
 	public String deletePost(Integer postId, Integer userId) throws Exception {
-		Post post=findPostById(userId);  // ekhane postId er jaygay userId use kora hoyeche (eta ekta bug)
+		Post post=findPostById(postId);  //(solved) ekhane postId er jaygay userId use kora hoyeche (eta ekta bug)
 		User user=userService.findUserById(userId); // user ke ber kora hocche
 		
 		// check kora hocche je user nijer post delete korche kina
@@ -117,7 +117,7 @@ public class PostServiceImplementation implements PostService {
 	@Override
 	public Post savedPost(Integer postId, Integer userId) throws Exception {
 		
-		Post post=findPostById(userId); // ekhaneo bug ache (postId er jaygay userId use kora hoyeche)
+		Post post=findPostById(postId); //(solved) ekhaneo bug ache (postId er jaygay userId use kora hoyeche)
 		User user=userService.findUserById(userId);	 // user ke ber kora hocche	
 		
 		// check kora hocche user ager theke post ta save koreche kina
@@ -133,7 +133,7 @@ public class PostServiceImplementation implements PostService {
 	//ei method ta post like/unlike korar jonno
 	@Override
 	public Post likePost(Integer postId, Integer userId) throws Exception {
-		Post post=findPostById(userId); // ekhaneo same bug ache (postId er jaygay userId use kora hoyeche)
+		Post post=findPostById(postId); //(solved) ekhaneo same bug ache (postId er jaygay userId use kora hoyeche)
 		User user=userService.findUserById(userId);  // user ke ber kora hocche
 		
 		// check kora hocche user already like koreche kina
