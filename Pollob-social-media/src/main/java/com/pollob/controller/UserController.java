@@ -73,7 +73,7 @@ public class UserController {
 	 * sob user get korar jonno
 	 * "List<User>" sob user er data list akare jeno ase sei jonno list use hoyeche..
 	 */
-	@GetMapping("/users")
+	@GetMapping("/api/users")
 	public List<User> getUser() {
 		
 		List<User> users=userRepository.findAll();
@@ -90,7 +90,7 @@ public class UserController {
 	 * Optional= User ache or nai bujhai optional. jokhon input diya id database a thakbe na, tai ata use kora hoyeche
 	 * 
 	 */
-	@GetMapping("/users/{userId}")
+	@GetMapping("/api/users/{userId}")
 	public User getUserById(@PathVariable("userId") Integer Id) throws Exception {
 		
 		//"UserService" interface er "findUserById()" method use korlam
@@ -106,7 +106,7 @@ public class UserController {
 	 * "@PutMapping" use hoy data update korar jonno.
 	 * @RequestBody body te sei data dibo jei data change/update korte cai.
 	 */
-	@PutMapping("/users/{userId}")
+	@PutMapping("/api/users/{userId}")
 	public User updateUser(@RequestBody User user, @PathVariable Integer userId) throws Exception {
 		
 		//"UserService" interface er "updateUser()" method use korlam
@@ -120,7 +120,7 @@ public class UserController {
 	 * UserServiceImplementation class a "followUser()" implement korchi ja akhon "followUserHandler()" dara handle korchi.
 	 * 2ta @PathVariable nichi karon ekhon follower and onno jon following
 	 */
-	@PutMapping("/users/follow/{userId1}/{userId2}")
+	@PutMapping("/api/users/follow/{userId1}/{userId2}")
 	public User followUserHandler(@PathVariable Integer userId1, @PathVariable Integer userId2) throws Exception {
 	
 		//"UserService" interface er "followUser()" method use korlam
@@ -130,7 +130,7 @@ public class UserController {
 	
 	
 	//"UserServiceImplementation" class theke @RequestParam use kore "query" ta nicche.
-	@GetMapping("/users/search")
+	@GetMapping("/api/users/search")
 	public List<User> searchUser(@RequestParam("query") String query){
 		
 		//return type User kintu list akare jeno hoy sei jonno List<User>
