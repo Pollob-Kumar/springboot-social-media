@@ -41,27 +41,7 @@ public class UserController {
 	UserService userService;
 	
 	
-	/*
-	 * ei method er vitore "UserService" interface er "registerUser()" method use korbo, ja "UserServiceImplementation" class a implement korchi. 
-	 */
-	
-	/*database jonno 4-V te opore niye aslam, jekono jaigate rakha jai ata
-	 * @PostMapping= jokhon database a data add kora lagbe tokhon "@PostMapping" use hoy.
-	 * @RequestBody= jokhon kono frontend libray(ex. POSTMAN) theke data sent kori, tokhon data body-te sent korbo, ja database-a add hobe.
-	 * akhane(@RequestBody User user) "User" holo datatype and "user" holo obj/variable.
-	 * data insert er jonno ei "@PostMapping"
-	 */
-	@PostMapping("/users")
-	public User createUser(@RequestBody User user) {
-		
 
-		//"UserService" interface er "registerUser()" method use korlam
-		User savedUser=userService.registerUser(user);
-
-		//karon "savedUser" obj a save data ache.
-		return savedUser;
-		
-	}
 	
 
 	/*
