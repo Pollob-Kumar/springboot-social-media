@@ -1,8 +1,11 @@
 package com.pollob.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,7 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.pollob.config.JwtProvider;
 import com.pollob.models.User;
 import com.pollob.repository.UserRepository;
+import com.pollob.request.LoginRequest;
 import com.pollob.response.AuthResponse;
+import com.pollob.service.CustomerUserDetailsService;
 import com.pollob.service.UserService;
 
 @RestController
@@ -28,6 +33,9 @@ public class AuthController {
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private CustomerUserDetailsService customerUserDetails;
 	
 	/*
 	 * ei method er vitore "UserService" interface er "registerUser()" method use korbo, ja "UserServiceImplementation" class a implement korchi. 
@@ -74,6 +82,33 @@ public class AuthController {
 		//karon "savedUser" obj a save data ache.
 		return res;
 		
+	}
+	
+	//real endpoin hobe auth/singin
+	@PostMapping("/signin")
+	public AuthResponse signin(@RequestBody LoginRequest loginRequest) {
+		
+		Authentication authentication = authenticate(loginRequest.getEmail(), loginRequest.getPassword());
+		
+		
+		String token = JwtProvider.generateToken(authentication);
+		
+		AuthResponse res=new AuthResponse(token, "Login Success");
+		
+		//karon "savedUser" obj a save data ache.
+		return res;
+	}
+
+	private Authentication authenticate(String email, String password) {
+		UserDetails userDetails = customerUserDetails.loadUserByUsername(email);
+		
+		if(userDetails==null) {
+			throw new BadCredentialsException("invalid username");
+		}
+		if(!passwordEncoder.matches(password, userDetails.getPassword())) {
+			throw new BadCredentialsException("password not matched/wrong password");
+		}
+		return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 	}
 
 }
