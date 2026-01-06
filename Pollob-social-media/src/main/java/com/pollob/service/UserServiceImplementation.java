@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.pollob.config.JwtProvider;
 import com.pollob.models.User;
 import com.pollob.repository.UserRepository;
 
@@ -100,30 +101,30 @@ public class UserServiceImplementation implements UserService{
 	 * Kintu "UserController" class a ei followUser() ta handle korte hobe. jar  name dichi "followUserHandler" ja ache UserController class a.
 	 */
 	@Override
-	public User followUser(Integer userId1, Integer userId2) throws Exception {
+	public User followUser(Integer reqUserId, Integer userId2) throws Exception {
 		
 		/*
 		 * je follow korbe
 		 * "findUserById()" method use korlam, tai full code lekha laglo na.
 		 * "findUserById()" method a error dekhabe, sei jonno "Add throws declaration" dibo. and "followUser()" method a error jonno "Add exceptions to 'UserService.followUser()'" click korbo.
 		 */
-		User user1=findUserById(userId1);
+		User reqUser=findUserById(reqUserId);
 		
 		//jake follow korbe
 		User user2=findUserById(userId2);
 		
 		//user1 user2 k follow korle, user2 update hoye tar follower k add kore dibe. ex: user1 
-		user2.getFollowers().add(user1.getId());
+		user2.getFollowers().add(reqUser.getId());
 		
 		//user1 user2 k follow korle, user1 update hoye tar following a add hobe user2.
-		user1.getFollowings().add(user2.getId());
+		reqUser.getFollowings().add(user2.getId());
 		
 		//2ta user kei save korlam karon 2ta user e update korchi
-		userRepository.save(user1);
+		userRepository.save(reqUser);
 		userRepository.save(user2);
 		
 		//user1 follow korte caichilo tai user1 return korbo
-		return user1;
+		return reqUser;
 	}
 
 	
@@ -156,6 +157,9 @@ public class UserServiceImplementation implements UserService{
 		 if(user.getEmail()!=null) {
 			 oldUser.setEmail(user.getEmail());
 		 }
+		 if(user.getGender()!=null) {
+			 oldUser.setGender(user.getGender());
+		 }
 		 //ei vabei sob hobe.
 		
 		 //note: "save"= use hobe data add and update korte
@@ -181,6 +185,17 @@ public class UserServiceImplementation implements UserService{
 		//query tai return kore dilam, ei query tai @RequestParam use kore UserController nibe
 		return userRepository.searchUser(query);
 				
+	}
+
+
+	@Override
+	public User finddUserByJwt(String jwt) {
+		
+		String email=JwtProvider.getEmailFromJwtToken(jwt);
+		
+		User user=userRepository.findByEmail(email);
+		
+		return user;
 	}
 
 }
