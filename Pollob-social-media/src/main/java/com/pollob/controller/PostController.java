@@ -11,11 +11,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;  // request body theke data receive korar 
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController; // ei annotation bole je ei class ta REST API controller
 
 import com.pollob.models.Post;
+import com.pollob.models.User;
 import com.pollob.response.ApiResponse;
 import com.pollob.service.PostService;
+import com.pollob.service.UserService;
 
 @RestController
 public class PostController {
@@ -23,16 +26,24 @@ public class PostController {
 	// PostService automatic inject hobe
 	@Autowired
 	PostService postService;
+	@Autowired
+	UserService userService;
 
 	/*
 	 *  API: POST -> create new post
 	 *  ei method ta ekta notun post create korar jonno use hoy
 	 */
-	@PostMapping("/posts/user/{userId}")
-	public ResponseEntity<Post> createPost(@RequestBody Post post, @PathVariable Integer userId) throws Exception{
+	@PostMapping("/api/posts")
+	public ResponseEntity<Post> createPost(
+			@RequestHeader("Authorization")String jwt, 
+			@RequestBody Post post
+			) throws Exception{
+		
+		User reqUser = userService.finddUserByJwt(jwt);
+		
 		
 		// service layer e createNewPost() call kora hocche.
-		Post createdPost=postService.createNewPost(post, userId);
+		Post createdPost = postService.createNewPost(post, reqUser.getId());
 		
 		// created post return kora hocche status ACCEPTED (202) diye
 		return new ResponseEntity<>(createdPost,HttpStatus.ACCEPTED);
@@ -42,11 +53,16 @@ public class PostController {
 	 *  API: DELETE -> delete a post.
 	 *  ei method ta post delete korar jonno
 	 */
-	@DeleteMapping("/posts/{postId}/user/{userId}")
-	public ResponseEntity<ApiResponse> deletePost(@PathVariable Integer postId, @PathVariable Integer userId) throws Exception{
+	@DeleteMapping("/posts/{postId}")
+	public ResponseEntity<ApiResponse> deletePost(
+			@PathVariable Integer postId, 
+			@RequestHeader("Authorization")String jwt
+			) throws Exception{
+		
+		User reqUser = userService.finddUserByJwt(jwt);
 		
 		// service theke deletePost call kore message pawa hocche
-		String message=postService.deletePost(postId, userId);
+		String message=postService.deletePost(postId, reqUser.getId());
 		
 		// ApiResponse object banano hocche success message diye
 		ApiResponse res=new ApiResponse(message,true);
@@ -96,11 +112,16 @@ public class PostController {
 	 * API: PUT -> save or unsave a post
 	 * ei method ta post save/un-save korar jonno
 	 */
-	@PutMapping("/posts/save/{postId}/user/{userId}")
-	public ResponseEntity<Post> savePostdHandler(@PathVariable Integer postId, @PathVariable Integer userId) throws Exception{
+	@PutMapping("/posts/save/{postId}")
+	public ResponseEntity<Post> savePostdHandler(
+			@PathVariable Integer postId, 
+			@RequestHeader("Authorization")String jwt
+			) throws Exception{
+		
+		User reqUser = userService.finddUserByJwt(jwt);
 		
 		// service theke post save/unsave kora hocche
-		Post post=postService.savedPost(postId, userId);
+		Post post=postService.savedPost(postId, reqUser.getId());
 		
 		// updated post return kora hocche ACCEPTED (202) diye
 		return new ResponseEntity<Post>(post,HttpStatus.ACCEPTED);
@@ -110,11 +131,16 @@ public class PostController {
 	 * API: PUT -> like or unlike a post
 	 * ei method ta post like/unlike korar jonno
 	 */
-	@PutMapping("/posts/like/{postId}/user/{userId}")
-	public ResponseEntity<Post> likePostdHandler(@PathVariable Integer postId, @PathVariable Integer userId) throws Exception{
+	@PutMapping("/posts/like/{postId}")
+	public ResponseEntity<Post> likePostdHandler(
+			@PathVariable Integer postId, 
+			@RequestHeader("Authorization")String jwt
+			) throws Exception{
+		
+		User reqUser = userService.finddUserByJwt(jwt);
 		
 		// postService theke like/unlike operation kora hocche
-		Post post=postService.likePost(postId, userId);
+		Post post=postService.likePost(postId, reqUser.getId());
 		
 		// updated post return kora hocche ACCEPTED (202) diye
 		return new ResponseEntity<Post>(post,HttpStatus.ACCEPTED);
