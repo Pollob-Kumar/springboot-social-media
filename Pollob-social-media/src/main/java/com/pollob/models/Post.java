@@ -31,6 +31,8 @@ public class Post {
 	private List<User> liked=new ArrayList<>(); // ei list e thakbe jara ei post ta like koreche
 	private LocalDateTime createAt; // post ta kobe create hoyeche, tar date & time
 	
+	@OneToMany
+	private List<Comment> comments = new ArrayList<>();
 	
 	// default constructor (JPA er jonno dorkar hoy)
 	public Post() {
@@ -43,7 +45,7 @@ public class Post {
 	 * ei constructor diye sob field(id, caption e.t.c) er value set kora jabe
 	 */
 	public Post(Integer id, String caption, String image, String video, User user, List<User> liked,
-			LocalDateTime createAt) {
+			LocalDateTime createAt, List<Comment> comments) {
 		super();
 		this.id = id;
 		this.caption = caption;
@@ -52,6 +54,7 @@ public class Post {
 		this.user = user;
 		this.liked = liked;
 		this.createAt = createAt;
+		this.comments = comments;
 	}
 
 
@@ -59,6 +62,15 @@ public class Post {
 	 * niche getter & setter methods ache
 	 * ei methods gula diye private-field (id, caption e.t.c) er value get & set kora jay
 	 */
+
+	public List<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
+	}
+
 
 	public Integer getId() {
 		return id;        // post er id return kore

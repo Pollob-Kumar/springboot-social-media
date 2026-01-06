@@ -53,7 +53,7 @@ public class PostController {
 	 *  API: DELETE -> delete a post.
 	 *  ei method ta post delete korar jonno
 	 */
-	@DeleteMapping("/posts/{postId}")
+	@DeleteMapping("/api/posts/{postId}")
 	public ResponseEntity<ApiResponse> deletePost(
 			@PathVariable Integer postId, 
 			@RequestHeader("Authorization")String jwt
@@ -72,7 +72,7 @@ public class PostController {
 	}
 	
 	
-	@GetMapping("/posts/{postId}")
+	@GetMapping("/api//posts/{postId}")
 	public ResponseEntity<Post> findPostByIdHandler(@PathVariable Integer postId) throws Exception{
 		
 		Post post=postService.findPostById(postId);
@@ -84,7 +84,7 @@ public class PostController {
 	 * API: GET -> find all posts of a specific user
 	 *  ei method ta All post ber korar jonno
 	 */
-	@GetMapping("/posts/user/{userId}")
+	@GetMapping("/api/posts/user/{userId}")
 	public ResponseEntity<List<Post>>findUserPost(@PathVariable Integer userId){
 		
 		// specific user er sob post pawa hocche
@@ -98,7 +98,7 @@ public class PostController {
 	 * API: GET -> find all posts (sobar post)
 	 * ei method ta sobar post ber korar jonno
 	 */
-	@GetMapping("/posts")
+	@GetMapping("/api/posts")
 	public ResponseEntity<List<Post>>findAllPost(){
 		
 		// sob post fetch kora hocche
@@ -112,7 +112,7 @@ public class PostController {
 	 * API: PUT -> save or unsave a post
 	 * ei method ta post save/un-save korar jonno
 	 */
-	@PutMapping("/posts/save/{postId}")
+	@PutMapping("/api/posts/save/{postId}")
 	public ResponseEntity<Post> savePostdHandler(
 			@PathVariable Integer postId, 
 			@RequestHeader("Authorization")String jwt
@@ -131,7 +131,7 @@ public class PostController {
 	 * API: PUT -> like or unlike a post
 	 * ei method ta post like/unlike korar jonno
 	 */
-	@PutMapping("/posts/like/{postId}")
+	@PutMapping("/api/posts/like/{postId}")
 	public ResponseEntity<Post> likePostdHandler(
 			@PathVariable Integer postId, 
 			@RequestHeader("Authorization")String jwt
