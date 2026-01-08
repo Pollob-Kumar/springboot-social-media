@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.pollob.exceptions.UserException;
 import com.pollob.models.User;
 import com.pollob.repository.UserRepository;
 import com.pollob.service.UserService;
@@ -72,7 +73,7 @@ public class UserController {
 	 * 
 	 */
 	@GetMapping("/api/users/{userId}")
-	public User getUserById(@PathVariable("userId") Integer Id) throws Exception {
+	public User getUserById(@PathVariable("userId") Integer Id) throws UserException {
 		
 		//"UserService" interface er "findUserById()" method use korlam
 		User user=userService.findUserById(Id);
@@ -88,7 +89,7 @@ public class UserController {
 	 * @RequestBody body te sei data dibo jei data change/update korte cai.
 	 */
 	@PutMapping("/api/users")
-	public User updateUser(@RequestHeader("Authorization")String jwt, @RequestBody User user) throws Exception {
+	public User updateUser(@RequestHeader("Authorization")String jwt, @RequestBody User user) throws UserException {
 		
 		User reUser = userService.finddUserByJwt(jwt);
 		
@@ -104,7 +105,7 @@ public class UserController {
 	 * 2ta @PathVariable nichi karon ekhon follower and onno jon following
 	 */
 	@PutMapping("/api/users/follow/{userId2}")
-	public User followUserHandler(@RequestHeader("Authorization")String jwt, @PathVariable Integer userId2) throws Exception {
+	public User followUserHandler(@RequestHeader("Authorization")String jwt, @PathVariable Integer userId2) throws UserException {
 	
 		User reqUser = userService.finddUserByJwt(jwt);
 		
