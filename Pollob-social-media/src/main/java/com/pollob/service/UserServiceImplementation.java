@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.pollob.config.JwtProvider;
+import com.pollob.exceptions.UserException;
 import com.pollob.models.User;
 import com.pollob.repository.UserRepository;
 
@@ -65,7 +66,7 @@ public class UserServiceImplementation implements UserService{
 	 * throw new Exception() er jonno  "Add throws declaration korte hobe method er sathe. tokhon abar methodName er opor error asbe, tar jonno "Add exception UserService.findUserByeId() --mane InterfaceNme.methodName()" click korlei UserService(I) er findUserById() method er sathe "throws Exception" bosbe.
 	 */
 	@Override
-	public User findUserById(Integer userId) throws Exception {
+	public User findUserById(Integer userId) throws UserException {
 		
 		//check kore user ache ki na
 		Optional<User> user= userRepository.findById(userId);
@@ -75,7 +76,7 @@ public class UserServiceImplementation implements UserService{
 			return user.get();
 		}
 		//jodi id na paoya jai. tokhon ei exception asbe
-		throw new Exception("user not exist with userId "+userId);
+		throw new UserException("user not exist with userId "+userId);
 	}
 
 	
@@ -101,7 +102,7 @@ public class UserServiceImplementation implements UserService{
 	 * Kintu "UserController" class a ei followUser() ta handle korte hobe. jar  name dichi "followUserHandler" ja ache UserController class a.
 	 */
 	@Override
-	public User followUser(Integer reqUserId, Integer userId2) throws Exception {
+	public User followUser(Integer reqUserId, Integer userId2) throws UserException {
 		
 		/*
 		 * je follow korbe
@@ -135,13 +136,13 @@ public class UserServiceImplementation implements UserService{
 	 * throw new Exception() er jonno  "Add throws declaration korte hobe method er sathe. tokhon abar methodName er opor error asbe, tar jonno "Add exception UserService.findUserByeId() --mane InterfaceNme.methodName()" click korlei UserService(I) er updateUser() method er sathe "throws Exception" bosbe.
 	 */
 	@Override
-	public User updateUser(User user, Integer userId) throws Exception {
+	public User updateUser(User user, Integer userId) throws UserException {
 		
 		Optional<User> user1=userRepository.findById(userId);
 		
 		//jodi empty hoy tahole kaj korbe
 		if(user1.isEmpty()) {
-			throw new Exception("user not exit with id "+userId);
+			throw new UserException("user not exit with id "+userId);
 		}
 		
 		

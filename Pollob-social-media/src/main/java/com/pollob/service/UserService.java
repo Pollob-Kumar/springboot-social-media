@@ -2,6 +2,7 @@ package com.pollob.service;
 
 import java.util.List;
 
+import com.pollob.exceptions.UserException;
 import com.pollob.models.User;
 
 /*
@@ -13,10 +14,10 @@ public interface UserService {
 	//User er jonno 6ta API
 	public User registerUser(User user);
 	//"UserServiceImplementation" class er "findUserById()" method er sathe "throws Exception" ache. tai akhaneo "throws Exception" dite hoyeche.
-	public User findUserById(Integer userId) throws Exception;
+	public User findUserById(Integer userId) throws UserException;
 	public User findUserByEmail(String email);
-	public User followUser(Integer userId1, Integer userId2) throws Exception;
-	public User updateUser(User user, Integer userId) throws Exception;
+	public User followUser(Integer userId1, Integer userId2) throws UserException;
+	public User updateUser(User user, Integer userId) throws UserException;
 	public List<User> searchUser(String query);
 	
 	public User finddUserByJwt(String jwt);
